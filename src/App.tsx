@@ -202,122 +202,118 @@ function LearningMode() {
 
   return (
     <main className="h-full max-w-[1500px] mx-auto px-4 lg:px-8 py-3">
-      
+
 
       <div className="grid h-full min-h-0 xl:grid-cols-[260px_minmax(500px,1fr)_330px] gap-4 items-stretch">
         <LearningSidebar selectedPreset={selectedPreset} loadPreset={loadPreset} graph={graph} setGraph={setGraph} interaction={interaction} setInteraction={setInteraction} startVertex={startVertex} setStartVertex={setStartVertex} buggyMode={buggyMode} setBuggyMode={setBuggyMode} quiz={quiz} setQuiz={setQuiz} rootDemo={rootDemo} setRootDemo={setRootDemo} />
         <section className="h-full min-w-0 overflow-y-auto">
           <div className="bg-white rounded-xl shadow-card overflow-hidden border border-slate-100">
-            
-<div className="px-5 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
-  <div>
-    <h2 className="font-semibold text-navy">DFS visualization</h2>
-    <p className="text-xs text-muted-light mt-1">
-      {graph.vertices.length} vertices · {graph.edges.length} connections
-    </p>
-  </div>
 
-  <div className="flex flex-wrap items-center gap-2">
-    <div className="flex rounded-lg bg-slate-100 p-1">
-      <button
-        onClick={() => {
-          setRootDemo('root1');
-          loadPreset('root1');
-        }}
-        className={`px-3 py-1.5 text-[11px] rounded-md font-semibold ${
-          rootDemo === 'root1'
-            ? 'bg-white text-teal shadow-sm'
-            : 'text-muted-light'
-        }`}
-      >
-        1 child
-      </button>
-      <button
-        onClick={() => {
-          setRootDemo('root2');
-          loadPreset('root2');
-        }}
-        className={`px-3 py-1.5 text-[11px] rounded-md font-semibold ${
-          rootDemo === 'root2'
-            ? 'bg-white text-orange shadow-sm'
-            : 'text-muted-light'
-        }`}
-      >
-        2 children
-      </button>
-    </div>
+            <div className="px-5 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="font-semibold text-navy">DFS visualization</h2>
+                <p className="text-xs text-muted-light mt-1">
+                  {graph.vertices.length} vertices · {graph.edges.length} connections
+                </p>
+              </div>
 
-    <div className="flex flex-wrap gap-2">
-      <button
-        onClick={() => setShowBlockCut(false)}
-        className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${
-          !showBlockCut
-            ? 'bg-teal text-white'
-            : 'bg-slate-100 text-muted-light'
-        }`}
-      >
-        Graph view
-      </button>
-      <button
-        disabled={!result}
-        onClick={() => setShowBlockCut(true)}
-        className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${
-          showBlockCut
-            ? 'bg-orange text-white'
-            : 'bg-slate-100 text-muted-light disabled:opacity-50'
-        }`}
-      >
-        Block-cut tree
-      </button>
-    </div>
-  </div>
-</div>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex rounded-lg bg-slate-100 p-1">
+                  <button
+                    onClick={() => {
+                      setRootDemo('root1');
+                      loadPreset('root1');
+                    }}
+                    className={`px-3 py-1.5 text-[11px] rounded-md font-semibold ${rootDemo === 'root1'
+                        ? 'bg-white text-teal shadow-sm'
+                        : 'text-muted-light'
+                      }`}
+                  >
+                    1 child
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRootDemo('root2');
+                      loadPreset('root2');
+                    }}
+                    className={`px-3 py-1.5 text-[11px] rounded-md font-semibold ${rootDemo === 'root2'
+                        ? 'bg-white text-orange shadow-sm'
+                        : 'text-muted-light'
+                      }`}
+                  >
+                    2 children
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setShowBlockCut(false)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${!showBlockCut
+                        ? 'bg-teal text-white'
+                        : 'bg-slate-100 text-muted-light'
+                      }`}
+                  >
+                    Graph view
+                  </button>
+                  <button
+                    disabled={!result}
+                    onClick={() => setShowBlockCut(true)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg ${showBlockCut
+                        ? 'bg-orange text-white'
+                        : 'bg-slate-100 text-muted-light disabled:opacity-50'
+                      }`}
+                  >
+                    Block-cut tree
+                  </button>
+                </div>
+              </div>
+            </div>
 
             <div className="h-[250px]"><GraphCanvas graph={graph} onChange={setGraph} interaction={interaction} readOnly={!!result || showBlockCut} highlightVertex={displayStep.currentVertex} articulationPoints={displayStep.articulationPoints} treeEdges={displayStep.treeEdges} backEdges={displayStep.backEdges} visitedVertices={displayStep.visited} currentEdge={displayStep.currentEdge} edgeStack={displayStep.edgeStack} components={componentOverlays} blockCutMode={showBlockCut} blockCutNodes={result?.blockCutTree.nodes} blockCutLinks={result?.blockCutTree.links} /></div>
             <PlaybackControls result={result} stepIndex={stepIndex} playing={playing} setPlaying={setPlaying} onStep={(d) => step(d)} onReset={reset} speed={speed} setSpeed={setSpeed} onRun={run} />
           </div>
-          
-<div className="bg-white rounded-xl shadow-card mt-2 border border-slate-100 overflow-hidden">
-  <button
-    onClick={() => setExplainOpen(!explainOpen)}
-    className="w-full px-3 py-2 flex items-center justify-between text-left"
-  >
-    <span className="flex items-center gap-2 font-semibold text-navy text-sm">
-      <Lightbulb size={16} className="text-orange" />
-      Explain this step
-    </span>
-    <ChevronDown
-      size={16}
-      className={`text-muted-light transition-transform ${explainOpen ? 'rotate-180' : ''}`}
-    />
-  </button>
 
-  {explainOpen && (
-    <div className="px-3 pb-3 animate-fade-up">
-      <div className="rounded-lg bg-teal/5 border border-teal/15 p-3 text-xs leading-relaxed text-navy">
-        {displayStep.description}
-      </div>
+          <div className="bg-white rounded-xl shadow-card mt-2 border border-slate-100 overflow-hidden">
+            <button
+              onClick={() => setExplainOpen(!explainOpen)}
+              className="w-full px-3 py-2 flex items-center justify-between text-left"
+            >
+              <span className="flex items-center gap-2 font-semibold text-navy text-sm">
+                <Lightbulb size={16} className="text-orange" />
+                Explain this step
+              </span>
+              <ChevronDown
+                size={16}
+                className={`text-muted-light transition-transform ${explainOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
 
-      <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-muted-light">
-        <span className="font-semibold text-teal">
-          Step {result ? stepIndex + 1 : 0} of {result?.steps.length ?? 0}
-        </span>
+            {explainOpen && (
+              <div className="px-3 pb-3 animate-fade-up">
+                <div className="rounded-lg bg-teal/5 border border-teal/15 p-3 text-xs leading-relaxed text-navy">
+                  {displayStep.description}
+                </div>
 
-        {displayStep.kind === 'back-edge' && (
-          <span className="px-2 py-1 rounded-full bg-orange/10 text-orange font-semibold">
-            Back edge found
-          </span>
-        )}
+                <div className="flex flex-wrap items-center gap-2 mt-2 text-xs text-muted-light">
+                  <span className="font-semibold text-teal">
+                    Step {result ? stepIndex + 1 : 0} of {result?.steps.length ?? 0}
+                  </span>
 
-        {displayStep.kind === 'close-component' && (
-          <span className="px-2 py-1 rounded-full bg-teal/10 text-teal font-semibold">
-            Component closed
-          </span>
-        )}
-      </div>
-    </div>
-  )}
-</div>
+                  {displayStep.kind === 'back-edge' && (
+                    <span className="px-2 py-1 rounded-full bg-orange/10 text-orange font-semibold">
+                      Back edge found
+                    </span>
+                  )}
+
+                  {displayStep.kind === 'close-component' && (
+                    <span className="px-2 py-1 rounded-full bg-teal/10 text-teal font-semibold">
+                      Component closed
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
 
         </section>
         <LearningInspector result={result} step={displayStep} graph={graph} quiz={quiz} isFinished={isFinished} buggyMode={buggyMode} />
@@ -328,52 +324,52 @@ function LearningMode() {
 
 function LearningSidebar({ selectedPreset, loadPreset, graph, setGraph, interaction, setInteraction, startVertex, setStartVertex, buggyMode, setBuggyMode, quiz, setQuiz, rootDemo, setRootDemo }: { selectedPreset: string; loadPreset: (id: string) => void; graph: GraphModel; setGraph: (g: GraphModel) => void; interaction: InteractionMode; setInteraction: (m: InteractionMode) => void; startVertex: string; setStartVertex: (s: string) => void; buggyMode: 'none' | 'skip-parent-check' | 'strict-greater'; setBuggyMode: (m: 'none' | 'skip-parent-check' | 'strict-greater') => void; quiz: boolean; setQuiz: (v: boolean) => void; rootDemo: 'root1' | 'root2'; setRootDemo: (v: 'root1' | 'root2') => void }) {
   return <aside className="space-y-2">
-    
-<Panel title="Choose a graph" icon={Layers}>
-  <select
-    value={selectedPreset}
-    onChange={(e) => loadPreset(e.target.value)}
-    className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-navy outline-none focus:border-teal"
-  >
-    {presets.map((p) => (
-      <option key={p.id} value={p.id}>{p.name}</option>
-    ))}
-  </select>
 
-  <p className="text-[11px] leading-snug text-muted-light mt-1.5">
-    {presets.find((p) => p.id === selectedPreset)?.description}
-  </p>
-</Panel>
+    <Panel title="Choose a graph" icon={Layers}>
+      <select
+        value={selectedPreset}
+        onChange={(e) => loadPreset(e.target.value)}
+        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-navy outline-none focus:border-teal"
+      >
+        {presets.map((p) => (
+          <option key={p.id} value={p.id}>{p.name}</option>
+        ))}
+      </select>
 
-    
-<Panel title="Graph builder" icon={Settings2}>
-  <p className="text-[11px] text-muted-light leading-snug mb-2">
-    Add vertices, connect them, or drag to reposition. Right-click removes an item.
-  </p>
+      <p className="text-[11px] leading-snug text-muted-light mt-1.5">
+        {presets.find((p) => p.id === selectedPreset)?.description}
+      </p>
+    </Panel>
 
-  <div className="grid grid-cols-2 gap-1.5">
-    <ToolButton active={interaction === 'add-vertex'} onClick={() => setInteraction(interaction === 'add-vertex' ? 'view' : 'add-vertex')} icon={Plus} label="Add node" />
-    <ToolButton active={interaction === 'connect'} onClick={() => setInteraction(interaction === 'connect' ? 'view' : 'connect')} icon={GitBranch} label="Connect" />
-    <ToolButton active={interaction === 'delete'} onClick={() => setInteraction(interaction === 'delete' ? 'view' : 'delete')} icon={Trash2} label="Delete" />
-    <ToolButton active={interaction === 'view'} onClick={() => setInteraction('view')} icon={Eye} label="Move / view" />
-  </div>
 
-  <div className="mt-2 pt-2 border-t border-slate-100">
-    <label className="text-[11px] font-semibold text-navy">Start DFS at</label>
-    <select
-      value={startVertex}
-      onChange={(e) => setStartVertex(e.target.value)}
-      className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-navy"
-    >
-      {graph.vertices.map((v) => (
-        <option value={v.id} key={v.id}>{v.label}</option>
-      ))}
-    </select>
-  </div>
-</Panel>
+    <Panel title="Graph builder" icon={Settings2}>
+      <p className="text-[11px] text-muted-light leading-snug mb-2">
+        Add vertices, connect them, or drag to reposition. Right-click removes an item.
+      </p>
+
+      <div className="grid grid-cols-2 gap-1.5">
+        <ToolButton active={interaction === 'add-vertex'} onClick={() => setInteraction(interaction === 'add-vertex' ? 'view' : 'add-vertex')} icon={Plus} label="Add node" />
+        <ToolButton active={interaction === 'connect'} onClick={() => setInteraction(interaction === 'connect' ? 'view' : 'connect')} icon={GitBranch} label="Connect" />
+        <ToolButton active={interaction === 'delete'} onClick={() => setInteraction(interaction === 'delete' ? 'view' : 'delete')} icon={Trash2} label="Delete" />
+        <ToolButton active={interaction === 'view'} onClick={() => setInteraction('view')} icon={Eye} label="Move / view" />
+      </div>
+
+      <div className="mt-2 pt-2 border-t border-slate-100">
+        <label className="text-[11px] font-semibold text-navy">Start DFS at</label>
+        <select
+          value={startVertex}
+          onChange={(e) => setStartVertex(e.target.value)}
+          className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs text-navy"
+        >
+          {graph.vertices.map((v) => (
+            <option value={v.id} key={v.id}>{v.label}</option>
+          ))}
+        </select>
+      </div>
+    </Panel>
 
     <Panel title="Teaching tools" icon={CircleHelp}><Toggle label="Predict before reveal" value={quiz} onChange={setQuiz} /><div className="mt-3"><label className="text-xs font-semibold text-navy">Buggy algorithm</label><select value={buggyMode} onChange={(e) => setBuggyMode(e.target.value as typeof buggyMode)} className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-2 text-xs text-navy"><option value="none">Off — correct algorithm</option><option value="skip-parent-check">Skip parent-edge check</option><option value="strict-greater">Use &gt; instead of ≥</option></select></div></Panel>
-    
+
   </aside>;
 }
 
@@ -384,7 +380,7 @@ function LearningInspector({ result, step, graph, quiz, isFinished, buggyMode }:
   const finish = isFinished && result;
   return <aside className="space-y-2">
     {quiz && step.currentVertex && !revealed && <div className="bg-navy rounded-xl p-5 text-white shadow-card animate-fade-up"><div className="flex items-center gap-2 text-teal-light text-xs font-bold tracking-wider uppercase"><CircleHelp size={15} /> Pause & predict</div><h3 className="font-serif text-xl mt-3">Is “{graph.vertices.find((v) => v.id === step.currentVertex)?.label}” an articulation point?</h3><p className="text-muted-dark text-xs mt-2">What evidence would you look for in disc[] and low[]?</p><textarea value={answer} onChange={(e) => setAnswer(e.target.value)} placeholder="Write your reasoning…" className="w-full mt-4 bg-white/10 border border-white/20 rounded-lg p-3 text-sm text-white placeholder:text-muted-dark/70 outline-none focus:border-teal-light" rows={3} /><button onClick={() => setRevealed(true)} className="w-full mt-3 bg-teal-light text-navy font-semibold rounded-lg py-2 text-sm hover:bg-white transition-colors">Reveal answer</button></div>}
-    <Panel title="Live values" icon={BarChart3}><div className="grid grid-cols-[1fr_60px_60px] text-[11px] font-semibold text-muted-light border-b border-slate-100 pb-2 mb-1"><span>Vertex</span><span className="text-center">disc</span><span className="text-center">low</span></div>{graph.vertices.map((v) => { const current = step.currentVertex === v.id; const ap = step.articulationPoints.includes(v.id); return <div key={v.id} className={`grid grid-cols-[1fr_60px_60px] items-center py-2 text-xs rounded ${current ? 'bg-teal/10' : ''}`}><span className={`font-semibold truncate ${ap ? 'text-orange' : 'text-navy'}`}>{v.label}{ap && <span className="ml-1 text-[9px]">●</span>}</span><span className="text-center font-mono text-muted-light">{step.disc[v.id] ?? '—'}</span><span className="text-center font-mono font-semibold text-teal">{step.low[v.id] ?? '—'}</span></div>})}</Panel>
+    <Panel title="Live values" icon={BarChart3}><div className="grid grid-cols-[1fr_60px_60px] text-[11px] font-semibold text-muted-light border-b border-slate-100 pb-2 mb-1"><span>Vertex</span><span className="text-center">disc</span><span className="text-center">low</span></div>{graph.vertices.map((v) => { const current = step.currentVertex === v.id; const ap = step.articulationPoints.includes(v.id); return <div key={v.id} className={`grid grid-cols-[1fr_60px_60px] items-center py-2 text-xs rounded ${current ? 'bg-teal/10' : ''}`}><span className={`font-semibold truncate ${ap ? 'text-orange' : 'text-navy'}`}>{v.label}{ap && <span className="ml-1 text-[9px]">●</span>}</span><span className="text-center font-mono text-muted-light">{step.disc[v.id] ?? '—'}</span><span className="text-center font-mono font-semibold text-teal">{step.low[v.id] ?? '—'}</span></div> })}</Panel>
     <Panel title="Edge stack" icon={Layers}><div className="min-h-[68px] flex flex-col-reverse gap-1">{step.edgeStack.length === 0 ? <span className="text-xs text-muted-light italic">Stack is empty</span> : step.edgeStack.slice(-6).map((e, i) => <div key={`${e.edgeId}-${i}`} className="bg-teal/10 border border-teal/20 rounded px-2 py-1 text-[10px] text-teal font-mono">{graph.vertices.find((v) => v.id === e.from)?.label} → {graph.vertices.find((v) => v.id === e.to)?.label}</div>)}</div><div className="mt-2 text-[10px] text-muted-light">{step.components.length} component{step.components.length === 1 ? '' : 's'} closed</div></Panel>
     {revealed && quiz && step.currentVertex && <div className="bg-teal/10 border border-teal/20 rounded-xl p-4 text-xs leading-relaxed text-navy"><div className="font-semibold text-teal flex items-center gap-2"><Check size={14} /> Answer revealed</div><p className="mt-2">The algorithm compares each child’s low value with the current vertex’s discovery value. The timeline below shows exactly when that comparison becomes decisive.</p></div>}
     {finish && <Summary result={result} graph={graph} buggyMode={buggyMode} />}
@@ -565,12 +561,12 @@ function RealWorldMode() {
     pdf.save('graphguard-network-report.pdf');
   };
 
-  
-return (
-  <main className="h-full max-w-[1500px] mx-auto px-4 lg:px-8 py-3">
-    
-    <div className="grid h-full min-h-0 xl:grid-cols-[250px_minmax(500px,1fr)_320px] gap-3 items-stretch">
- <aside className="space-y-2">
+
+  return (
+    <main className="h-full max-w-[1500px] mx-auto px-4 lg:px-8 py-3">
+
+      <div className="grid h-full min-h-0 xl:grid-cols-[250px_minmax(500px,1fr)_320px] gap-3 items-stretch">
+        <aside className="space-y-2">
           <Panel title="Choose your domain" icon={Network}>
             <div className="space-y-1.4">
               {domainTemplates.map((d) => {
@@ -579,15 +575,13 @@ return (
                   <button
                     key={d.id}
                     onClick={() => changeDomain(d.id)}
-                    className={`w-full text-left flex items-center gap-2 p-2 rounded-lg border transition-colors ${
-                      domainId === d.id
+                    className={`w-full text-left flex items-center gap-2 p-2 rounded-lg border transition-colors ${domainId === d.id
                         ? 'border-orange bg-orange/5'
                         : 'border-slate-100 hover:border-teal/30'
-                    }`}
+                      }`}
                   >
-                    <span className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                      domainId === d.id ? 'bg-orange text-white' : 'bg-slate-100 text-teal'
-                    }`}>
+                    <span className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${domainId === d.id ? 'bg-orange text-white' : 'bg-slate-100 text-teal'
+                      }`}>
                       <Icon size={14} />
                     </span>
                     <span className="min-w-0">
@@ -600,104 +594,104 @@ return (
             </div>
           </Panel>
 
-          
-<Panel title="Add a node" icon={Plus}>
-  <label className="text-[11px] font-semibold text-navy">
-    Node type
-  </label>
-  <select
-    value={selectedType}
-    onChange={(e) => setSelectedType(e.target.value)}
-    className="w-full mt-0.5 bg-slate-50 border border-slate-200 rounded-md px-2 py-1 text-[11px] text-navy"
-  >
-    {domain.nodeTypes.map((n) => (
-      <option key={n.label}>{n.label}</option>
-    ))}
-  </select>
 
-  <label className="text-[11px] font-semibold text-navy block mt-1.5">
-    Name (optional)
-  </label>
-  <input
-    value={customLabel}
-    onChange={(e) => setCustomLabel(e.target.value)}
-    placeholder={`e.g. ${selectedType}`}
-    className="w-full mt-0.5 bg-slate-50 border border-slate-200 rounded-md px-2 py-1 text-[11px] text-navy outline-none focus:border-teal"
-  />
+          <Panel title="Add a node" icon={Plus}>
+            <label className="text-[11px] font-semibold text-navy">
+              Node type
+            </label>
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="w-full mt-0.5 bg-slate-50 border border-slate-200 rounded-md px-2 py-1 text-[11px] text-navy"
+            >
+              {domain.nodeTypes.map((n) => (
+                <option key={n.label}>{n.label}</option>
+              ))}
+            </select>
 
-  <button
-    onClick={addNode}
-    className="w-full mt-1.5 flex items-center justify-center gap-1.5 py-1 bg-teal text-white rounded-md text-[11px] font-semibold hover:bg-teal-light transition-colors"
-  >
-    <Plus size={12} /> Add to map
-  </button>
-</Panel>
+            <label className="text-[11px] font-semibold text-navy block mt-1.5">
+              Name (optional)
+            </label>
+            <input
+              value={customLabel}
+              onChange={(e) => setCustomLabel(e.target.value)}
+              placeholder={`e.g. ${selectedType}`}
+              className="w-full mt-0.5 bg-slate-50 border border-slate-200 rounded-md px-2 py-1 text-[11px] text-navy outline-none focus:border-teal"
+            />
+
+            <button
+              onClick={addNode}
+              className="w-full mt-1.5 flex items-center justify-center gap-1.5 py-1 bg-teal text-white rounded-md text-[11px] font-semibold hover:bg-teal-light transition-colors"
+            >
+              <Plus size={12} /> Add to map
+            </button>
+          </Panel>
 
 
-          
+
 
         </aside>
 
         <section className="h-full min-w-0 overflow-y-auto">
           <div ref={reportRef} className="bg-white rounded-xl shadow-card overflow-hidden border border-slate-100">
-            
-<div className="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
-  <div>
-    <h2 className="font-semibold text-navy">{domain.name} map</h2>
-    <p className="text-xs text-muted-light mt-1">
-      Click and drag to reposition · Right-click to remove
-    </p>
-  </div>
 
-  <div className="flex flex-wrap items-center gap-2">
-    <div className="flex items-center gap-2 text-xs text-muted-light mr-2">
-      <span className="w-2 h-2 rounded-full bg-teal-light" /> Safe
-      <span className="w-2 h-2 rounded-full bg-orange ml-1" /> Critical
-    </div>
+            <div className="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="font-semibold text-navy">{domain.name} map</h2>
+                <p className="text-xs text-muted-light mt-1">
+                  Click and drag to reposition · Right-click to remove
+                </p>
+              </div>
 
-    <button
-      onClick={saveScenario}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-navy hover:border-teal hover:text-teal transition-colors"
-    >
-      <Save size={13} />
-      Save network
-    </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex items-center gap-2 text-xs text-muted-light mr-2">
+                  <span className="w-2 h-2 rounded-full bg-teal-light" /> Safe
+                  <span className="w-2 h-2 rounded-full bg-orange ml-1" /> Critical
+                </div>
 
-    <details className="relative">
-      <summary className="cursor-pointer list-none inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-navy hover:border-teal">
-        <FileText size={13} />
-        Saved ({saved.length})
-        <ChevronDown size={13} />
-      </summary>
+                <button
+                  onClick={saveScenario}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-navy hover:border-teal hover:text-teal transition-colors"
+                >
+                  <Save size={13} />
+                  Save network
+                </button>
 
-      <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
-        {saved.length === 0 ? (
-          <p className="text-xs text-muted-light">
-            Saved networks stay in this browser.
-          </p>
-        ) : (
-          <div className="max-h-40 space-y-1 overflow-y-auto">
-            {saved.map((s) => (
-              <button
-                key={s.name}
-                onClick={() => {
-                  setDomainId(s.domainId);
-                  setGraph(s.graph);
-                  setSelectedType(getDomain(s.domainId).nodeTypes[0].label);
-                  setAnalysis(null);
-                }}
-                className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs text-navy hover:bg-slate-50 hover:text-teal"
-              >
-                <FileText size={13} />
-                {s.name}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    </details>
-  </div>
-</div>
+                <details className="relative">
+                  <summary className="cursor-pointer list-none inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-navy hover:border-teal">
+                    <FileText size={13} />
+                    Saved ({saved.length})
+                    <ChevronDown size={13} />
+                  </summary>
+
+                  <div className="absolute right-0 top-full z-50 mt-2 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-lg">
+                    {saved.length === 0 ? (
+                      <p className="text-xs text-muted-light">
+                        Saved networks stay in this browser.
+                      </p>
+                    ) : (
+                      <div className="max-h-40 space-y-1 overflow-y-auto">
+                        {saved.map((s) => (
+                          <button
+                            key={s.name}
+                            onClick={() => {
+                              setDomainId(s.domainId);
+                              setGraph(s.graph);
+                              setSelectedType(getDomain(s.domainId).nodeTypes[0].label);
+                              setAnalysis(null);
+                            }}
+                            className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs text-navy hover:bg-slate-50 hover:text-teal"
+                          >
+                            <FileText size={13} />
+                            {s.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </details>
+              </div>
+            </div>
 
 
             <div className="h-[300px]">
@@ -713,9 +707,9 @@ return (
                   const v = graph.vertices.find((n) => n.id === id);
                   return v
                     ? iconForNode(
-                        domainId,
-                        domain.nodeTypes.find((n) => v.label.startsWith(n.label))?.label ?? selectedType
-                      )
+                      domainId,
+                      domain.nodeTypes.find((n) => v.label.startsWith(n.label))?.label ?? selectedType
+                    )
                     : null;
                 }}
                 showLabels
