@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { GraphModel, GraphVertex, GraphEdge } from '@/engine/algorithm';
 import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
@@ -69,8 +69,11 @@ export function GraphCanvas(props: CanvasProps) {
   const [hoverVertex, setHoverVertex] = useState<string | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 520 });
   const [viewBox, setViewBox] = useState<ViewBox>({ x: 0, y: 0, w: 800, h: 520 });
-  // fitToken bumps to force a refit (e.g. the "Fit to view" button)
-  const [fitToken, setFitToken] = useState(0);
+  useEffect(() => {
+    if (interaction !== 'connect' || (pendingConnect && !graph.vertices.some((v) => v.id === pendingConnect))) {
+      setPendingConnect(null);
+    }
+  }, [graph.vertices, interaction, pendingConnect]);
 
   // Resize observer
   useEffect(() => {
@@ -122,7 +125,7 @@ export function GraphCanvas(props: CanvasProps) {
   useEffect(() => {
     setViewBox(computeFit());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vertexSignature, dimensions.width, dimensions.height, fitToken]);
+  }, [vertexSignature, dimensions.width, dimensions.height]);
 
   const fitView = useCallback(() => setViewBox(computeFit()), [computeFit]);
 
@@ -287,7 +290,7 @@ export function GraphCanvas(props: CanvasProps) {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onContextMenu={(e) => e.preventDefault()}
-        style={{ background: '#F5F7F9', cursor: interaction === 'add-vertex' ? 'crosshair' : interaction === 'connect' ? 'pointer' : interaction === 'delete' ? 'not-allowed' : draggingId ? 'grabbing' : 'default' }}
+        style={{ background: '#F5F7F9', cursor: interaction === 'add-vertex' || interaction === 'delete' ? 'crosshair' : interaction === 'connect' ? 'pointer' : draggingId ? 'grabbing' : 'default' }}
       >
         <defs>
           <filter id="nodeShadow" x="-50%" y="-50%" width="200%" height="200%">

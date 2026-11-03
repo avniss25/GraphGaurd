@@ -563,9 +563,9 @@ function RealWorldMode() {
 
 
   return (
-    <main className="h-full max-w-[1500px] mx-auto px-4 lg:px-8 py-3">
+    <main className="min-h-full xl:h-full max-w-[1500px] mx-auto px-4 lg:px-8 py-3">
 
-      <div className="grid h-full min-h-0 xl:grid-cols-[250px_minmax(500px,1fr)_320px] gap-3 items-stretch">
+      <div className="grid min-h-full grid-cols-1 xl:h-full xl:min-h-0 xl:grid-cols-[250px_minmax(500px,1fr)_320px] gap-3 items-stretch">
         <aside className="space-y-2">
           <Panel title="Choose your domain" icon={Network}>
             <div className="space-y-1.4">
@@ -632,14 +632,18 @@ function RealWorldMode() {
 
         </aside>
 
-        <section className="h-full min-w-0 overflow-y-auto">
+        <section className="min-w-0 xl:h-full xl:overflow-y-auto">
           <div ref={reportRef} className="bg-white rounded-xl shadow-card overflow-hidden border border-slate-100">
 
             <div className="px-4 py-3 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 className="font-semibold text-navy">{domain.name} map</h2>
                 <p className="text-xs text-muted-light mt-1">
-                  Click and drag to reposition · Right-click to remove
+                  {interaction === 'connect'
+                    ? 'Select two nodes to add a connection.'
+                    : interaction === 'delete'
+                      ? 'Select a node to delete it and its connections, or select a line to delete only that connection.'
+                      : 'Click and drag to reposition · Right-click a node or connection to remove it'}
                 </p>
               </div>
 
@@ -693,6 +697,46 @@ function RealWorldMode() {
               </div>
             </div>
 
+
+            <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 bg-slate-50 px-4 py-2">
+              <span className="mr-1 text-[11px] font-semibold text-muted-light">Edit map</span>
+              <button
+                type="button"
+                aria-pressed={interaction === 'view'}
+                onClick={() => setInteraction('view')}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  interaction === 'view'
+                    ? 'bg-teal text-white'
+                    : 'border border-slate-200 bg-white text-navy hover:border-teal'
+                }`}
+              >
+                <Eye size={14} /> Move nodes
+              </button>
+              <button
+                type="button"
+                aria-pressed={interaction === 'connect'}
+                onClick={() => setInteraction('connect')}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  interaction === 'connect'
+                    ? 'bg-teal text-white'
+                    : 'border border-slate-200 bg-white text-navy hover:border-teal'
+                }`}
+              >
+                <GitBranch size={14} /> Connect nodes
+              </button>
+              <button
+                type="button"
+                aria-pressed={interaction === 'delete'}
+                onClick={() => setInteraction('delete')}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  interaction === 'delete'
+                    ? 'bg-orange text-white'
+                    : 'border border-slate-200 bg-white text-navy hover:border-orange'
+                }`}
+              >
+                <Trash2 size={14} /> Delete node
+              </button>
+            </div>
 
             <div className="h-[300px]">
               <GraphCanvas
